@@ -1,0 +1,1 @@
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\FLEXlm License Manager' -Name 'SW_D_LICENSE_FILE' -Value "PDMPRODCQ" -Force

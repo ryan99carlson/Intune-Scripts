@@ -1,4 +1,5 @@
-$loc_Foundation = 'HKLM:\SOFTWARE\CQMedical'
+#Check for Intune Foundation folder (Company folder)
+    $loc_Foundation = 'HKLM:\SOFTWARE\CQMedical'
 
 if(-not(Test-Path $loc_Foundation -ErrorAction SilentlyContinue)){
     ############################################################################################################
@@ -207,6 +208,24 @@ if(-not(Test-Path $loc_Foundation -ErrorAction SilentlyContinue)){
         }
 
         ##Manual Removals
+
+        ##Dell Pair Manager
+        $dellSA = Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object { $_.DisplayName -like "Dell*Pair" } | Select-Object -Property UninstallString
+
+        foreach($sa in $dellSA){
+            if($sa.uninstallstring){
+                cmd.exe /c $sa.UninstallString /S /norestart
+            }
+        }
+
+        ##Dell Peripheral Manager
+        $dellSA = Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object { $_.DisplayName -like "Dell*Peripheral*Manager" } | Select-Object -Property UninstallString
+
+        foreach($sa in $dellSA){
+            if($sa.uninstallstring){
+                cmd.exe /c $sa.UninstallString /S /norestart
+            }
+        }
 
         ##Dell Optimizer
         $dellSA = Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall, HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall | Get-ItemProperty | Where-Object { $_.DisplayName -like "Dell*Optimizer*Core" } | Select-Object -Property UninstallString
